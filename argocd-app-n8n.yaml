@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: n8n
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -12,8 +14,78 @@ spec:
     targetRevision: HEAD
     helm:
       releaseName: n8n
-      valueFiles:
-        - values.yaml
+      values: |
+        replicaCount: 1
+
+        image:
+          repository: n8nio/n8n
+          tag: 1.67.3
+          pullPolicy: IfNotPresent
+
+        # The encryption key and basic auth password are now loaded from the 'n8n-credentials' secret
+        existingSecret: "n8n-credentials"
+
+        basicAuth:
+          enabled: true
+          user: "admin"
+
+        service:
+          type: ClusterIP
+          port: 5678
+
+        ingress:
+          enabled: true
+          className: nginx
+          annotations: {}
+          hosts:
+            - host: n8n.thesugu.com
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+          tls:
+            - secretName: n8n-thesugu-tls
+              hosts:
+                - n8n.thesugu.com
+
+        persistence:
+          enabled: true
+          accessModes:
+            - ReadWriteOnce
+          size: 5Gi
+
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+
+        env:
+          - name: GENERIC_TIMEZONE
+            value: UTC
+          - name: N8N_HOST
+            value: n8n.thesugu.com
+          - name: N8N_PROTOCOL
+            value: https
+          - name: N8N_PORT
+            value: "5678"
+          - name: N8N_DISABLE_PRODUCTION_MAIN_PROCESS
+            value: "true"
+          - name: N8N_DIAGNOSTICS_ENABLED
+            value: "false"
+          - name: N8N_EDITOR_BASE_URL
+            value: https://n8n.thesugu.com/
+
+        postgresql:
+          enabled: true
+          auth:
+            database: n8n
+            username: n8n
+            password: n8n # For better security, consider managing this with a secret as well.
+          primary:
+            persistence:
+              size: 5Gi
   destination:
     server: https://kubernetes.default.svc
     namespace: n8n
