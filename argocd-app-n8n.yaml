@@ -6,49 +6,14 @@ metadata:
 spec:
   project: default
   source:
-    # Using the official OCI Helm chart repository
-    repoURL: oci://8gears.container-registry.com/library
-    chart: n8n
-    targetRevision: 1.0.10
+    # Using Git repository with Helm chart
+    repoURL: https://github.com/8gears/n8n-helm-chart.git
+    path: charts/n8n
+    targetRevision: HEAD
     helm:
       releaseName: n8n
-      values: |
-        replicaCount: 1
-
-        image:
-          repository: n8nio/n8n
-          tag: 1.67.3
-          pullPolicy: IfNotPresent
-
-        # The encryption key and basic auth password are now loaded from the 'n8n-credentials' secret
-        existingSecret: "n8n-credentials"
-
-        basicAuth:
-          enabled: true
-          user: "admin"
-
-        ingress:
-          enabled: true
-          className: nginx
-          hosts:
-            - host: n8n.thesugu.com
-              paths:
-                - path: /
-                  pathType: ImplementationSpecific
-          tls:
-            - secretName: n8n-thesugu-tls
-              hosts:
-                - n8n.thesugu.com
-
-        postgresql:
-          enabled: true
-          auth:
-            database: n8n
-            username: n8n
-            password: n8n # For better security, consider managing this with a secret as well.
-          primary:
-            persistence:
-              size: 5Gi
+      valueFiles:
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: n8n

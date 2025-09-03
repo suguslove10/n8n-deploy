@@ -5,6 +5,13 @@ image:
   tag: 1.67.3
   pullPolicy: IfNotPresent
 
+# The encryption key and basic auth password are now loaded from the 'n8n-credentials' secret
+existingSecret: "n8n-credentials"
+
+basicAuth:
+  enabled: true
+  user: "admin"
+
 service:
   type: ClusterIP
   port: 5678
@@ -56,10 +63,12 @@ env:
 postgresql:
   enabled: true
   auth:
-    username: n8n
     database: n8n
-    existingSecret: ""
-    password: n8n
+    username: n8n
+    password: n8n # For better security, consider managing this with a secret as well.
+  primary:
+    persistence:
+      size: 5Gi
 
 extraEnv: []
 
