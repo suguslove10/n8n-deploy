@@ -36,7 +36,8 @@ spec:
         ingress:
           enabled: true
           className: traefik
-          annotations: {}
+          annotations:
+            traefik.ingress.kubernetes.io/router.middlewares: n8n-n8n-https-redirect@kubernetescrd
           hosts:
             - host: n8n.thesugu.com
               paths:

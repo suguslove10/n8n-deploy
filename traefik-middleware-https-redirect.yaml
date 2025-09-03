@@ -1,0 +1,11 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: n8n-https-redirect
+  namespace: n8n
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+
+
