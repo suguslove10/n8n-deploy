@@ -15,26 +15,30 @@ spec:
       values: |
         replicaCount: 1
 
-        n8n:
-          image:
-            repository: n8nio/n8n
-            tag: 1.67.3
-            pullPolicy: IfNotPresent
-          # The encryption key and basic auth password are now loaded from the 'n8n-credentials' secret
-          # Create this secret using the command provided in the chat.
-          existingSecret: "n8n-credentials"
-          webhookUrl: https://n8n.thesugu.com/
-          basicAuth:
-            enabled: true
-            user: "admin"
+        image:
+          repository: n8nio/n8n
+          tag: 1.67.3
+          pullPolicy: IfNotPresent
+
+        # The encryption key and basic auth password are now loaded from the 'n8n-credentials' secret
+        existingSecret: "n8n-credentials"
+
+        basicAuth:
+          enabled: true
+          user: "admin"
 
         ingress:
           enabled: true
           className: nginx
-          host: n8n.thesugu.com
+          hosts:
+            - host: n8n.thesugu.com
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
           tls:
-            enabled: true
-            secretName: n8n-thesugu-tls
+            - secretName: n8n-thesugu-tls
+              hosts:
+                - n8n.thesugu.com
 
         postgresql:
           enabled: true
