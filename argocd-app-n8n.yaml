@@ -40,8 +40,7 @@ spec:
           hosts:
             - host: n8n.thesugu.com
               paths:
-                - path: /
-                  pathType: Prefix
+                - /
           tls:
             - secretName: n8n-thesugu-tls
               hosts:
