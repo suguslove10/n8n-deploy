@@ -6,9 +6,10 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/a5r0n/n8n-chart.git
-    targetRevision: main
-    path: charts/n8n
+    # Using the official Helm chart repository
+    repoURL: https://8gears.github.io/n8n-helm-chart/
+    chart: n8n
+    targetRevision: 0.41.0
     helm:
       releaseName: n8n
       values: |
@@ -19,12 +20,13 @@ spec:
             repository: n8nio/n8n
             tag: 1.67.3
             pullPolicy: IfNotPresent
-          encryptionKey: "CHANGE_ME_LONG_RANDOM"
+          # The encryption key and basic auth password are now loaded from the 'n8n-credentials' secret
+          # Create this secret using the command provided in the chat.
+          existingSecret: "n8n-credentials"
           webhookUrl: https://n8n.thesugu.com/
-          auth:
+          basicAuth:
             enabled: true
-            username: "admin"
-            password: "CHANGE_ME_STRONG"
+            user: "admin"
 
         ingress:
           enabled: true
@@ -39,7 +41,7 @@ spec:
           auth:
             database: n8n
             username: n8n
-            password: n8n
+            password: n8n # For better security, consider managing this with a secret as well.
           primary:
             persistence:
               size: 5Gi
