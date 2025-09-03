@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: n8nio/n8n
-  tag: 1.67.3
+  tag: 1.110.1
   pullPolicy: IfNotPresent
 
 # The encryption key and basic auth password are now loaded from the 'n8n-credentials' secret
@@ -18,7 +18,7 @@ service:
 
 ingress:
   enabled: true
-  className: nginx
+  className: traefik
   annotations: {}
   hosts:
     - host: n8n.thesugu.com
@@ -59,6 +59,8 @@ env:
     value: "false"
   - name: N8N_EDITOR_BASE_URL
     value: https://n8n.thesugu.com/
+  - name: N8N_SECURE_COOKIE
+    value: "false"
 
 postgresql:
   enabled: true
