@@ -35,7 +35,7 @@ spec:
 
         ingress:
           enabled: true
-          className: nginx
+          className: traefik
           annotations: {}
           hosts:
             - host: n8n.thesugu.com
