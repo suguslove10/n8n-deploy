@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: oci://ghcr.io/a5r0n/charts
-    chart: n8n
-    targetRevision: 0.3.0
+    repoURL: https://github.com/a5r0n/n8n-chart.git
+    targetRevision: main
+    path: charts/n8n
     helm:
       releaseName: n8n
       values: |
