@@ -9,7 +9,7 @@ spec:
     # Using the official OCI Helm chart repository
     repoURL: oci://8gears.container-registry.com/library
     chart: n8n
-    targetRevision: 0.41.0
+    targetRevision: 1.0.12
     helm:
       releaseName: n8n
       values: |
