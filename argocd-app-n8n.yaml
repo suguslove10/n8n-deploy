@@ -19,7 +19,7 @@ spec:
 
         image:
           repository: n8nio/n8n
-          tag: 1.67.3
+          tag: 1.110.1
           pullPolicy: IfNotPresent
 
         # The encryption key and basic auth password are now loaded from the 'n8n-credentials' secret
