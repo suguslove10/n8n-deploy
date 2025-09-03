@@ -6,8 +6,8 @@ metadata:
 spec:
   project: default
   source:
-    # Using the official Helm chart repository
-    repoURL: https://8gears.github.io/n8n-helm-chart/
+    # Using the official OCI Helm chart repository
+    repoURL: oci://8gears.container-registry.com/library
     chart: n8n
     targetRevision: 0.41.0
     helm:
